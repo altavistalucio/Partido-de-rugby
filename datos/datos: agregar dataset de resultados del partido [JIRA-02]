@@ -1,0 +1,12 @@
+categoria,equipo_local,equipo_visitante
+tries_convertidos,4,3
+tries_no_convertidos,1,2
+penales_convertidos,3,2
+penales_errados,1,2
+free_kicks,2,1
+scrums_ganados,7,5
+scrums_perdidos,3,5
+line_ganados,8,6
+line_perdidos,2,4
+kickoff_ganados,5,4
+kickoff_perdidos,3,4
