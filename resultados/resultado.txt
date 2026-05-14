@@ -1,0 +1,15 @@
+=========================================
+   RESULTADOS DEL PARTIDO DE RUGBY
+=========================================
+
+=== TRIES ===
+Tries convertidos    -> Local: 4 | Visitante: 3
+Tries no convertidos -> Local: 1 | Visitante: 2
+
+=== FORMACIONES FIJAS - SCRUM ===
+Scrums ganados       -> Local: 7 | Visitante: 5
+Scrums perdidos      -> Local: 3 | Visitante: 5
+
+=== FORMACIONES FIJAS - KICKOFF ===
+Kickoff ganados      -> Local: 5 | Visitante: 4
+Kickoff perdidos    -> Local: 3 | Visitante: 4

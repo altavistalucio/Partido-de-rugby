@@ -53,4 +53,4 @@ print("Scrums perdidos      -> Local:", scrums_perdidos_local, "| Visitante:", s
 
 print("\n=== FORMACIONES FIJAS - KICKOFF ===")
 print("Kickoff ganados      -> Local:", kickoff_ganados_local,  "| Visitante:", kickoff_ganados_visita)
-print("Kickoff perdidos     -> Local:", kickoff_perdidos_local, "| Visit
+print("Kickoff perdidos    -> Local:", kickoff_perdidos_local, "| Visitante:", kickoff_perdidos_visita)
