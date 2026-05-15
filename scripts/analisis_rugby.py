@@ -1,56 +1,80 @@
-# =========================================
-# Analisis de Resultados - Partido de Rugby
-# Escenario D - Estadisticas Deportivas
-# Trabajo Practico - TUP
-# =========================================
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
 
-# -- DATOS DEL PARTIDO --
-# acá cargamos todos los datos del partido manualmente
+# Carga del dataset desde la carpeta /datos
+df = pd.read_csv('../datos/resultados_rugby.csv')
 
-# Tries (un try convertido vale 7 puntos, no convertido vale 5)
-tries_conv_local = 4
-tries_conv_visita = 3
-tries_noconv_local = 1
-tries_noconv_visita = 2
+print("Dataset cargado correctamente")
+print(f"Cantidad de partidos: {len(df)}
+")
 
-# Scrums (formacion fija donde empujan los forwards)
-scrums_ganados_local = 7
-scrums_ganados_visita = 5
-scrums_perdidos_local = 3
-scrums_perdidos_visita = 5
+# Partidos ganados por equipo
+equipos = ['Los Pumas RC', 'Tigres Rugby', 'Cóndores RC', 'Dragones RC']
 
-# Kickoff (patadas al inicio y reinicio del juego)
-kickoff_ganados_local = 5
-kickoff_ganados_visita = 4
-kickoff_perdidos_local = 3
-kickoff_perdidos_visita = 4
+ganados      = {e: 0 for e in equipos}
+perdidos     = {e: 0 for e in equipos}
+puntos_favor = {e: 0 for e in equipos}
 
-# -- CALCULOS --
-# calculamos los puntos totales de cada equipo
-puntos_local = (tries_conv_local * 7) + (tries_noconv_local * 5)
-puntos_visita = (tries_conv_visita * 7) + (tries_noconv_visita * 5)
+for _, fila in df.iterrows():
+    local     = fila['equipo_local']
+    visitante = fila['equipo_visitante']
+    pts_l     = fila['puntos_local']
+    pts_v     = fila['puntos_visitante']
 
-# -- MOSTRAMOS LOS RESULTADOS --
-print("========================================")
-print("   RESULTADOS DEL PARTIDO DE RUGBY")
-print("========================================")
+    puntos_favor[local]     += pts_l
+    puntos_favor[visitante] += pts_v
 
-# mostramos quien gano
-if puntos_local > puntos_visita:
-    print("Ganador: LOCAL con", puntos_local, "puntos")
-elif puntos_visita > puntos_local:
-    print("Ganador: VISITA con", puntos_visita, "puntos")
-else:
-    print("Resultado: EMPATE")
+    if pts_l > pts_v:
+        ganados[local]      += 1
+        perdidos[visitante] += 1
+    else:
+        ganados[visitante]  += 1
+        perdidos[local]     += 1
 
-print("\n=== TRIES ===")
-print("Tries convertidos    -> Local:", tries_conv_local, "| Visitante:", tries_conv_visita)
-print("Tries no convertidos -> Local:", tries_noconv_local, "| Visitante:", tries_noconv_visita)
+print("=== Partidos ganados por equipo ===")
+for e in equipos:
+    print(f"  {e}: {ganados[e]} ganados / {perdidos[e]} perdidos")
 
-print("\n=== FORMACIONES FIJAS - SCRUM ===")
-print("Scrums ganados  -> Local:", scrums_ganados_local, "| Visitante:", scrums_ganados_visita)
-print("Scrums perdidos -> Local:", scrums_perdidos_local, "| Visitante:", scrums_perdidos_visita)
+# Tabla de posiciones
+tabla = pd.DataFrame({
+    'Equipo':         equipos,
+    'Ganados':        [ganados[e]      for e in equipos],
+    'Perdidos':       [perdidos[e]     for e in equipos],
+    'Puntos a favor': [puntos_favor[e] for e in equipos]
+})
+tabla = tabla.sort_values('Ganados', ascending=False).reset_index(drop=True)
+tabla.index += 1
 
-print("\n=== FORMACIONES FIJAS - KICKOFF ===")
-print("Kickoff ganados  -> Local:", kickoff_ganados_local, "| Visitante:", kickoff_ganados_visita)
-print("Kickoff perdidos -> Local:", kickoff_perdidos_local, "| Visitante:", kickoff_perdidos_visita)
+print("
+=== Tabla de posiciones ===")
+print(tabla.to_string())
+
+# Promedio de puntos por partido
+print("
+=== Promedio de puntos por partido ===")
+for e in equipos:
+    print(f"  {e}: {puntos_favor[e] / 6:.1f} puntos/partido")
+
+# Gráfico
+nombres   = tabla['Equipo'].tolist()
+victorias = tabla['Ganados'].tolist()
+colores   = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+
+plt.figure(figsize=(8, 5))
+plt.bar(nombres, victorias, color=colores)
+plt.title('Partidos ganados por equipo – Torneo de Rugby 2026')
+plt.ylabel('Victorias')
+plt.xlabel('Equipo')
+for i, v in enumerate(victorias):
+    plt.text(i, v + 0.05, str(v), ha='center', fontweight='bold')
+plt.tight_layout()
+
+# Guardar resultados
+os.makedirs('../resultados', exist_ok=True)
+plt.savefig('../resultados/grafico_rendimiento.png', dpi=150)
+tabla.to_csv('../resultados/tabla_posiciones.csv')
+
+print("
+Gráfico y tabla guardados en /resultados")
+print("¡Análisis finalizado!")
