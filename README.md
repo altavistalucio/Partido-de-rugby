@@ -32,3 +32,12 @@ Contiene 12 partidos con los siguientes datos: equipos, puntos, tries, penales, 
 ## Trazabilidad
 
 Los commits siguen el formato: RUGBY-X: tipo: descripción
+
+## Revisión QA
+- Documentación revisada y validada por el equipo.
+
+## Revisión QA
+- Documentación revisada y validada por el equipo.
+
+## Revisión QA
+- Documentación revisada y validada por el equipo.
